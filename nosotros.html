@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - TRUCKFUND | Autoridad y Respaldo</title>
+    <style>
+        /* BASE & VARIABLES (Consistente con index.html) */
+        :root {
+            --bg-color: #f4f4f0;
+            --primary: #FFD700; /* Amarillo Camión */
+            --black: #111111;
+            --white: #ffffff;
+            --border-thick: 4px;
+            --shadow: 6px 6px 0px var(--black);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Impact, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--black);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px;
+            padding-bottom: 80px;
+        }
+
+        /* UTILIDADES BRUTALISTAS */
+        .brutal-box {
+            background: var(--white);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .box-header {
+            background: var(--black);
+            color: var(--primary);
+            display: inline-block;
+            padding: 5px 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border: 2px solid var(--primary);
+            position: absolute;
+            top: -15px;
+            left: 15px;
+        }
+
+        .brutal-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: var(--black);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .brutal-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px var(--black);
+        }
+
+        /* NAVEGACIÓN SUPERIOR (Componente Compartido) */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--black);
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            border-bottom: var(--border-thick) solid var(--primary);
+        }
+        .logo { font-size: 1.8rem; font-style: italic; letter-spacing: -1px; text-decoration: none; color: var(--primary); }
+        .desktop-menu { display: none; }
+        
+        @media (min-width: 768px) {
+            .desktop-menu { display: flex; gap: 20px; align-items: center; }
+            .desktop-menu a { color: var(--white); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; }
+            .desktop-menu a:hover { color: var(--primary); }
+            body { padding-bottom: 0; }
+            .mobile-bottom-nav { display: none !important; }
+        }
+
+        /* LAYOUT PRINCIPAL */
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title {
+            background: var(--black);
+            color: var(--primary);
+            padding: 20px;
+            text-align: center;
+            border: var(--border-thick) solid var(--primary);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
+        }
+
+        .page-title h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 10px; }
+        .page-title p { font-family: monospace; font-size: 1rem; color: var(--white); }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .grid-layout { grid-template-columns: 2fr 1fr; }
+        }
+
+        /* CONTENIDO ESPECÍFICO */
+        h2 { text-transform: uppercase; margin: 20px 0 15px 0; border-bottom: 4px solid var(--black); padding-bottom: 5px;}
+        .text-body { font-family: Arial, sans-serif; font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; font-weight: bold; }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .data-card { background: var(--bg-color); border: 2px solid var(--black); padding: 15px; }
+        .data-card h3 { font-family: monospace; font-size: 0.9rem; color: #555; margin-bottom: 5px; }
+        .data-card p { font-size: 1.2rem; }
+
+        .infra-img { width: 100%; border: 4px solid var(--black); filter: grayscale(100%) contrast(120%); margin-bottom: 15px; background: #ccc; min-height: 200px;}
+
+        /* TESTIMONIOS */
+        .testimonial { background: var(--bg-color); border-left: 6px solid var(--primary); padding: 15px; margin-bottom: 15px; border-top: 2px solid var(--black); border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); }
+        .testimonial p { font-family: Arial, sans-serif; font-style: italic; font-weight: bold; margin-bottom: 10px; }
+        .testimonial footer { font-family: monospace; color: var(--primary); background: var(--black); display: inline-block; padding: 3px 8px; font-size: 0.85rem; }
+
+        /* WIDGET CTA STICKY */
+        .sticky-cta { position: sticky; top: 90px; background: var(--primary); border: var(--border-thick) solid var(--black); box-shadow: var(--shadow); padding: 20px; text-align: center; }
+
+        /* NAVEGACIÓN INFERIOR MÓVIL */
+        .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--white); border-top: var(--border-thick) solid var(--black); display: flex; z-index: 1000; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--black); text-decoration: none; font-family: monospace; font-weight: bold; font-size: 0.8rem; border-right: 2px solid var(--black); }
+        .nav-item:last-child { border-right: none; }
+        .nav-item.active { background: var(--primary); }
+
+        /* FOOTER */
+        .footer { background: var(--black); color: var(--white); padding: 40px 20px; display: flex; flex-direction: column; gap: 20px; border-top: var(--border-thick) solid var(--primary); font-family: monospace; margin-top: 40px; }
+        @media (min-width: 768px) { .footer { flex-direction: row; justify-content: space-between; } }
+        .footer a { color: #ccc; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer a:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAV (Componente Compartido) -->
+    <nav class="top-nav">
+        <a href="index.html" class="logo">TRUCKFUND</a>
+        <div class="desktop-menu">
+            <a href="index.html">Inicio</a>
+            <a href="financiacion.html">Financiación</a>
+            <a href="nosotros.html" style="color: var(--primary); text-decoration: underline;">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="contacto.html" class="brutal-btn" style="padding: 10px 20px; font-size: 1rem; display: inline-block; width: auto; box-shadow: 4px 4px 0px #000;">Aplica YA</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="page-title">
+            <h1>Estructura Legal Sólida</h1>
+            <p>CAPITAL INMEDIATO PARA TRANSPORTISTAS, SIN BUROCRACIA.</p>
+        </div>
+
+        <div class="grid-layout">
+            <!-- COLUMNA IZQUIERDA: Legal e Infraestructura -->
+            <div class="content-column">
+                
+                <section class="brutal-box">
+                    <div class="box-header">Autoridad Legal</div>
+                    <h2>Licencias y Regulación</h2>
+                    <p class="text-body">Operamos bajo los más estrictos estándares de cumplimiento financiero comercial. Tu capital está respaldado y asegurado.</p>
+                    
+                    <div class="data-grid">
+                        <div class="data-card">
+                            <h3>NIT REGISTRADO</h3>
+                            <p>10008547865</p>
+                        </div>
+                        <div class="data-card">
+                            <h3>JURISDICCIÓN</h3>
+                            <p>BOGOTÁ, COL.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="brutal-box" style="margin-top: 40px;">
+                    <div class="box-header">Base de Operaciones</div>
+                    <h2>Infraestructura Física</h2>
+                    <p class="text-body">No somos una pagina fantasma. Tenemos oficinas reales donde cerramos los tratos que mueven la industria.</p>
+                    <div class="infra-img"></div> <!-- Placeholder visual, CSS maneja el fondo gris -->
+                    <div class="data-card" style="background: var(--black); color: var(--white); border-color: var(--primary);">
+                        <h3 style="color: var(--primary);">DIRECCIÓN FÍSICA</h3>
+                        <p>KR 78, BOGOTÁ, COLOMBIA</p>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- COLUMNA DERECHA: Testimonios y CTA -->
+            <aside class="sidebar-column">
+                
+                <section class="brutal-box">
+                    <div class="box-header">Voces del Camino</div>
+                    <h2>Recomendaciones sociales</h2>
+                    
+                    <div class="testimonial">
+                        <p>"Cero vueltas. Capital en la cuenta el mismo día que presenté los papeles. Justo lo que necesitaba para el motor."</p>
+                        <footer>— JUAN M., OPERADOR</footer>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <p>"Las tasas son claras, sin letras chicas. Me ayudaron a expandir mi flota cuando el banco tradicional dijo no."</p>
+                        <footer>— CARLOS G., DUEÑO DE FLOTA</footer>
+                    </div>
+                </section>
+
+                <!-- STICKY CTA WIDGET -->
+                <div class="sticky-cta">
+                    <h2 style="border: none; margin-top: 0; font-size: 1.5rem;">FINANCIA TU CAMIÓN HOY</h2>
+                    <a href="contacto.html" class="brutal-btn" style="background: var(--white);">
+                        Solicitar Crédito
+                    </a>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item">INICIO</a>
+        <a href="contacto.html" class="nav-item active" style="background: var(--primary); border-top: 4px solid var(--black);">APLICA</a>
+        <a href="financiacion.html" class="nav-item">CRÉDITO</a>
+        <a href="nosotros.html" class="nav-item">LEGAL</a>
+    </nav>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>
+            <h3 style="font-family: 'Arial Black'; font-size: 1.5rem; margin-bottom: 10px;">TRUCKFUND</h3>
+            <p>© 2026 NIT 100.845.700</p>
+            <p>BOGOTÁ, COLOMBIA</p>
+        </div>
+        <div>
+            <a href="#">POLÍTICAS DE PRIVACIDAD</a>
+            <a href="#">TÉRMINOS Y SERVICIOS</a>
+            <a href="contacto.html">CONTACTO</a>
+        </div>
+    </footer>
+
+</body>
+</html>

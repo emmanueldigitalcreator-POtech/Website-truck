@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto & Pre-aprobación | TRUCKFUND</title>
+    <style>
+        /* BASE & VARIABLES (Consistente) */
+        :root {
+            --bg-color: #f4f4f0;
+            --primary: #FFD700; /* Amarillo Camión */
+            --black: #111111;
+            --white: #ffffff;
+            --border-thick: 4px;
+            --shadow: 6px 6px 0px var(--black);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial Black', Impact, -apple-system, sans-serif; }
+
+        body { background-color: var(--bg-color); color: var(--black); display: flex; flex-direction: column; min-height: 100vh; padding-top: 70px; padding-bottom: 80px; }
+
+        /* NAVEGACIÓN SUPERIOR */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: var(--black); color: var(--primary); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 1000; border-bottom: var(--border-thick) solid var(--primary); }
+        .logo { font-size: 1.8rem; font-style: italic; letter-spacing: -1px; text-decoration: none; color: var(--primary); }
+        .desktop-menu { display: none; }
+        @media (min-width: 768px) {
+            .desktop-menu { display: flex; gap: 20px; align-items: center; }
+            .desktop-menu a { color: var(--white); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; }
+            .desktop-menu a:hover { color: var(--primary); }
+            body { padding-bottom: 0; }
+            .mobile-bottom-nav { display: none !important; }
+        }
+
+        /* LAYOUT PRINCIPAL */
+        main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+        /* CONTENEDOR DEL FORMULARIO */
+        .form-container { background: var(--white); border: var(--border-thick) solid var(--black); box-shadow: var(--shadow); width: 100%; max-width: 600px; padding: 30px 20px; }
+        
+        .form-header { text-align: center; margin-bottom: 30px; border-bottom: var(--border-thick) solid var(--black); padding-bottom: 20px; }
+        .form-header h1 { font-size: 2rem; text-transform: uppercase; line-height: 1.1; margin-bottom: 10px; }
+        .form-header p { font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; color: #444; }
+        .badge { display: inline-block; background: var(--black); color: var(--primary); font-family: monospace; padding: 5px 10px; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px; }
+
+        /* ELEMENTOS DEL FORMULARIO */
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; }
+        
+        input[type="text"], input[type="tel"], select {
+            width: 100%;
+            background: var(--bg-color);
+            border: 3px solid var(--black);
+            padding: 15px;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            outline: none;
+            border-radius: 0;
+            appearance: none;
+        }
+        
+        input:focus, select:focus { background: var(--white); border-color: var(--primary); box-shadow: 4px 4px 0px var(--black); }
+
+        .checkbox-group { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 30px; padding-top: 20px; border-top: 2px solid #ccc; }
+        input[type="checkbox"] { width: 25px; height: 25px; border: 3px solid var(--black); appearance: none; background: var(--white); cursor: pointer; position: relative; flex-shrink: 0; margin-top: 2px; }
+        input[type="checkbox"]:checked { background: var(--black); }
+        input[type="checkbox"]:checked::after { content: '✔'; position: absolute; color: var(--primary); font-size: 18px; top: -2px; left: 3px; font-family: Arial; }
+        .checkbox-group label { font-family: Arial, sans-serif; font-size: 0.9rem; text-transform: none; line-height: 1.4; font-weight: normal; margin-bottom: 0; cursor: pointer; }
+
+        /* BOTÓN DE ENVÍO */
+        .submit-btn {
+            display: block; width: 100%; background: var(--primary); color: var(--black); border: var(--border-thick) solid var(--black); box-shadow: 6px 6px 0px var(--black); padding: 20px; font-size: 1.5rem; text-transform: uppercase; font-family: 'Arial Black', sans-serif; cursor: pointer; transition: all 0.1s;
+        }
+        .submit-btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--black); }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: translate(4px, 4px); }
+
+        /* NAVEGACIÓN INFERIOR MÓVIL */
+        .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--white); border-top: var(--border-thick) solid var(--black); display: flex; z-index: 1000; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--black); text-decoration: none; font-family: monospace; font-weight: bold; font-size: 0.8rem; border-right: 2px solid var(--black); }
+        .nav-item:last-child { border-right: none; }
+        .nav-item.active { background: var(--primary); }
+
+        /* FOOTER */
+        .footer { background: var(--black); color: var(--white); padding: 40px 20px; display: flex; flex-direction: column; gap: 20px; border-top: var(--border-thick) solid var(--primary); font-family: monospace; margin-top: auto; }
+        @media (min-width: 768px) { .footer { flex-direction: row; justify-content: space-between; } }
+        .footer a { color: #ccc; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer a:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="logo">TRUCKFUND</a>
+        <div class="desktop-menu">
+            <a href="financiacion.html">Financiación</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html" style="color: var(--primary); text-decoration: underline;">Contacto</a>
+            <a href="contacto.html" class="submit-btn" style="padding: 10px 20px; font-size: 1rem; display: inline-block; width: auto; box-shadow: 4px 4px 0px #000; border-width: 3px;">Aplica YA</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="form-container">
+            <div class="form-header">
+                <span class="badge">SISTEMA SEGURO ACTIVO</span>
+                <h1>Embudo de Pre-aprobación</h1>
+                <p>Ingresa tus datos operativos para una evaluación crediticia instantánea.</p>
+            </div>
+
+            <form id="preapprovalForm" action="contacto.html" method="GET">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez Logistics" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono (WhatsApp)</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="+57 300 000 0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="vehiculo">Tipo de vehículo a financiar</label>
+                    <select id="vehiculo" name="vehiculo" required>
+                        <option value="" disabled selected>Selecciona una categoría...</option>
+                        <option value="pesada">Carga Pesada (Tractos, Remolques)</option>
+                        <option value="ligera">Carga Ligera (Furgones, Pickups)</option>
+                        <option value="maquinaria">Maquinaria Amarilla</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuota">Cuota inicial disponible</label>
+                    <select id="cuota" name="cuota" required>
+                        <option value="" disabled selected>Selecciona un rango...</option>
+                        <option value="rango_1">Menos de $10,000 USD</option>
+                        <option value="rango_2">Entre $10,000 y $25,000 USD</option>
+                        <option value="rango_3">Más de $25,000 USD</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="autorizacion" name="autorizacion" value="aceptado" required>
+                    <label for="autorizacion">
+                        <strong>REQUERIDO:</strong> Autorizo el tratamiento de mis datos personales y la consulta en centrales de riesgo para la evaluación de este perfil crediticio.
+                    </label>
+                </div>
+
+                <button type="submit" id="submitBtn" class="submit-btn">Evaluar mi Perfil</button>
+            </form>
+        </div>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item">INICIO</a>
+        <a href="contacto.html" class="nav-item active" style="background: var(--primary); border-top: 4px solid var(--black);">APLICA</a>
+        <a href="financiacion.html" class="nav-item">CRÉDITO</a>
+        <a href="nosotros.html" class="nav-item">LEGAL</a>
+    </nav>
+
+    <footer class="footer">
+        <div>
+            <h3 style="font-family: 'Arial Black'; font-size: 1.5rem; margin-bottom: 10px;">TRUCKFUND</h3>
+            <p>© 2026 NIT 100.845.700</p>
+            <p>BOGOTÁ, COLOMBIA</p>
+        </div>
+        <div>
+            <a href="#">POLÍTICAS DE PRIVACIDAD</a>
+            <a href="#">TÉRMINOS Y SERVICIOS</a>
+            <a href="contacto.html">CONTACTO</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('preapprovalForm');
+            const btn = document.getElementById('submitBtn');
+
+            // 1. Mostrar datos si vienen en la URL (Simulación visual del GET)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('nombre')) {
+                // Si la URL tiene parámetros, significa que el formulario ya se envió.
+                document.querySelector('.form-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px 0;">
+                        <h1 style="font-size: 2.5rem; color: #111; margin-bottom: 20px;">¡PERFIL RECIBIDO!</h1>
+                        <p style="font-family: Arial; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;">
+                            Gracias, ${urlParams.get('nombre')}. Estamos evaluando tu perfil para un vehículo tipo: ${urlParams.get('vehiculo').toUpperCase()}.
+                        </p>
+                        <p style="font-family: monospace; background: #FFD700; padding: 10px; display: inline-block; border: 2px solid #111;">
+                            Te contactaremos al ${urlParams.get('telefono')} en menos de 24 horas.
+                        </p>
+                        <br><br>
+                        <a href="index.html" style="display: inline-block; background: #111; color: #FFD700; padding: 15px 30px; text-decoration: none; font-weight: bold; border: 4px solid #111; text-transform: uppercase;">Volver al Inicio</a>
+                    </div>
+                `;
+                return; // Detenemos la ejecución del script aquí
+            }
+
+            // 2. Interceptar el envío para simular carga y luego forzar el GET
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); // Pausar el envío inmediato
+                
+                // Cambiar estado visual del botón
+                btn.textContent = 'PROCESANDO DATOS...';
+                btn.style.backgroundColor = 'var(--black)';
+                btn.style.color = 'var(--primary)';
+                btn.disabled = true;
+
+                // Esperar 1.5 segundos (psicología de conversión) y luego hacer el submit real
+                setTimeout(() => {
+                    form.submit(); // Esto dispara el GET y recarga la página con los datos en la URL
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
+
+

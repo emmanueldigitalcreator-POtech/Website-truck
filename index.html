@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUCKFUND - Financiación de Camiones</title>
+    <style>
+        /* BASE & VARIABLES */
+        :root {
+            --bg-color: #f4f4f0;
+            --primary: #FFD700; /* Amarillo Camión */
+            --black: #111111;
+            --white: #ffffff;
+            --border-thick: 4px;
+            --shadow: 6px 6px 0px var(--black);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Impact, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--black);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px; /* Espacio para el header fijo */
+            padding-bottom: 80px; /* Espacio para nav móvil */
+        }
+
+        /* UTILIDADES BRUTALISTAS */
+        .brutal-box {
+            background: var(--white);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: var(--shadow);
+        }
+
+        .brutal-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--black);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .brutal-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px var(--black);
+        }
+
+        /* NAVEGACIÓN SUPERIOR */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--black);
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            border-bottom: var(--border-thick) solid var(--primary);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-style: italic;
+            letter-spacing: -1px;
+        }
+
+        .desktop-menu { display: none; }
+
+        @media (min-width: 768px) {
+            .desktop-menu {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+            .desktop-menu a {
+                color: var(--white);
+                text-decoration: none;
+                font-size: 1.1rem;
+                text-transform: uppercase;
+            }
+            .desktop-menu a:hover { color: var(--primary); }
+            body { padding-bottom: 0; }
+            .mobile-bottom-nav { display: none !important; }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr;
+            border-bottom: var(--border-thick) solid var(--black);
+        }
+
+        @media (min-width: 768px) {
+            .hero { grid-template-columns: 1fr 1fr; }
+        }
+
+        .hero-content {
+            background: var(--primary);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: none;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-content { border-right: var(--border-thick) solid var(--black); padding: 60px 40px; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--white);
+            border: 3px solid var(--black);
+            padding: 15px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .hero-image {
+            background: #222;
+            min-height: 350px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: grayscale(100%) contrast(120%);
+        }
+
+        .market-badge {
+            position: absolute;
+            background: var(--black);
+            color: var(--primary);
+            padding: 20px;
+            border: var(--border-thick) solid var(--primary);
+            transform: rotate(-3deg);
+            text-align: center;
+        }
+
+        /* SECCIÓN RESPALDO */
+        .logos-section {
+            padding: 60px 20px;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .logos-section h2 {
+            display: inline-block;
+            background: var(--black);
+            color: var(--white);
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            border: var(--border-thick) solid var(--primary);
+        }
+
+        .logos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .logo-box {
+            border: 3px solid var(--black);
+            padding: 20px;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            height: 100px;
+        }
+
+        /* NAVEGACIÓN INFERIOR (MÓVIL) */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--white);
+            border-top: var(--border-thick) solid var(--black);
+            display: flex;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--black);
+            text-decoration: none;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.8rem;
+            border-right: 2px solid var(--black);
+        }
+
+        .nav-item:last-child { border-right: none; }
+        .nav-item.active { background: var(--primary); }
+
+        /* FOOTER */
+        .footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-top: var(--border-thick) solid var(--primary);
+            font-family: monospace;
+        }
+
+        @media (min-width: 768px) {
+            .footer { flex-direction: row; justify-content: space-between; }
+        }
+
+        .footer a { color: #ccc; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer a:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAV -->
+    <nav class="top-nav">
+        <div class="logo">TRUCKFUND</div>
+        <div class="desktop-menu">
+            <a href="index.html" style="color: var(--primary); text-decoration: underline;">Inicio</a>
+            <a href="/financiacion.html">Financiación</a>
+            <a href="/nosotros.html">Nosotros</a>
+            <a href="/contacto.html">Contacto</a>
+            <a href="/contacto.html" class="brutal-btn" style="padding: 10px 20px; font-size: 1rem;">Aplica YA</a>
+        </div>
+    </nav>
+
+    <main style="flex-grow: 1;">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Financiamos tu próximo camión de trabajo.</h1>
+                
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Respuesta en 24 horas
+                    </div>
+                    <div class="benefit-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        Nuevos y Usados
+                    </div>
+                    <div class="benefit-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        Tasas Competitivas
+                    </div>
+                </div>
+
+                <a href="contacto.html" class="brutal-btn" style="background: var(--white); font-size: 1.5rem;">
+                    Solicitar Estudio
+                </a>
+            </div>
+
+            <div class="hero-image">
+                <!-- Usar imagen optimizada en producción -->
+                <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="Camión Comercial">
+                <div class="market-badge">
+                    <div style="font-family: monospace; font-size: 0.9rem;">ESTADO DEL MERCADO</div>
+                    <div style="font-size: 1.5rem; margin-top: 5px;">TASAS DESDE 4.9%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGOS REGULATORIOS -->
+        <section class="logos-section">
+            <h2>RESPALDADOS POR</h2>
+            <div class="logos-grid">
+                <div class="logo-box brutal-box">MINISTERIOS DEL TRABAJO</div>
+                <div class="logo-box brutal-box">REGULADOR DEL ESTADO Y PRIVADOS</div>
+                <div class="logo-box brutal-box">BANCO INTERESTATALES</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="mobile-bottom-nav">
+        <a href="/index.html" class="nav-item">INICIO</a>
+        <a href="/contacto.html" class="nav-item active" style="background: var(--primary); border-top: 4px solid var(--black);">APLICA</a>
+        <a href="/financiacion.html" class="nav-item">CRÉDITO</a>
+        <a href="/nosotros.html" class="nav-item">LEGAL</a>
+    </nav>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>
+            <h3 style="font-family: 'Arial Black'; font-size: 1.5rem; margin-bottom: 10px;">TRUCKFUND</h3>
+            <p>© 2026 NIT 100.845.700</p>
+            <p>BOGOTÁ, COLOMBIA</p>
+        </div>
+        <div>
+            <a href="#">POLÍTICAS DE PRIVACIDAD</a>
+            <a href="#">TÉRMINOS Y SERVICIOS</a>
+            <a href="/contacto.html">CONTACTO</a>
+        </div>
+    </footer>
+
+</body>
+</html>

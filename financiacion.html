@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUCKFUND - Financiación | Catálogo de Crédito</title>
+    <style>
+        /* BASE & VARIABLES (Consistente) */
+        :root {
+            --bg-color: #f4f4f0;
+            --primary: #FFD700; /* Amarillo Camión */
+            --black: #111111;
+            --white: #ffffff;
+            --border-thick: 4px;
+            --shadow: 6px 6px 0px var(--black);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Impact, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--black);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px;
+            padding-bottom: 80px;
+        }
+
+        /* UTILIDADES BRUTALISTAS */
+        .brutal-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: var(--black);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: 4px 4px 0px var(--black);
+            padding: 15px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .brutal-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px var(--black);
+        }
+
+        /* NAVEGACIÓN SUPERIOR */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: var(--black); color: var(--primary); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 1000; border-bottom: var(--border-thick) solid var(--primary); }
+        .logo { font-size: 1.8rem; font-style: italic; letter-spacing: -1px; text-decoration: none; color: var(--primary); }
+        .desktop-menu { display: none; }
+        @media (min-width: 768px) {
+            .desktop-menu { display: flex; gap: 20px; align-items: center; }
+            .desktop-menu a { color: var(--white); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; }
+            .desktop-menu a:hover { color: var(--primary); }
+            body { padding-bottom: 0; }
+            .mobile-bottom-nav { display: none !important; }
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        main { flex-grow: 1; padding: 20px; max-width: 1000px; margin: 0 auto; width: 100%; }
+
+        .header-section { border-bottom: var(--border-thick) solid var(--black); padding-bottom: 20px; margin-bottom: 30px; }
+        .header-badge { background: var(--black); color: var(--white); padding: 5px 10px; font-family: monospace; font-size: 0.9rem; text-transform: uppercase; display: inline-block; margin-bottom: 15px; }
+        .header-section h1 { font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase; line-height: 1.1; margin-bottom: 15px; }
+        .header-section h1 span { background: var(--primary); padding: 0 10px; border: 2px solid var(--black); }
+        .header-section p { font-family: Arial, sans-serif; font-weight: bold; border-left: var(--border-thick) solid var(--primary); padding-left: 15px; max-width: 800px; }
+
+        /* TARJETAS DE CATÁLOGO */
+        .catalog-grid { display: flex; flex-direction: column; gap: 40px; }
+
+        .catalog-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--white);
+            border: var(--border-thick) solid var(--black);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        @media (min-width: 768px) { .catalog-card { flex-direction: row; } }
+
+        .card-image-container {
+            width: 100%;
+            height: 200px;
+            background: #ccc;
+            border-bottom: var(--border-thick) solid var(--black);
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .card-image-container { width: 40%; height: auto; border-bottom: none; border-right: var(--border-thick) solid var(--black); }
+        }
+
+        /* Imágenes placeholder simuladas con CSS para evitar peticiones HTTP en MVP */
+        .img-pesada { background: repeating-linear-gradient(45deg, #666, #666 10px, #555 10px, #555 20px); }
+        .img-ligera { background: repeating-linear-gradient(-45deg, #888, #888 10px, #777 10px, #777 20px); }
+        .img-maquinaria { background: repeating-linear-gradient(90deg, #FFD700, #FFD700 10px, #333 10px, #333 20px); filter: grayscale(100%); }
+        .catalog-card:hover .img-maquinaria { filter: grayscale(0%); } /* Easter egg brutalista */
+
+        .card-ref { position: absolute; top: 0; left: 0; background: var(--black); color: var(--primary); font-family: monospace; font-size: 0.8rem; padding: 5px 10px; border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); }
+
+        .card-content { width: 100%; display: flex; flex-direction: column; }
+        @media (min-width: 768px) { .card-content { width: 60%; } }
+
+        .card-header { background: var(--primary); border-bottom: var(--border-thick) solid var(--black); padding: 15px; }
+        .card-header.inverse { background: var(--black); color: var(--primary); }
+        .card-header.inverse h2 { color: var(--primary); }
+        .card-header h2 { font-size: 1.5rem; text-transform: uppercase; margin: 0; color: var(--black); }
+
+        .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-body p { font-family: Arial, sans-serif; font-size: 1rem; margin-bottom: 20px; font-weight: bold; }
+
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--black); margin-bottom: 20px; background: var(--bg-color); }
+        .data-cell { padding: 10px; border-bottom: 2px solid var(--black); border-right: 2px solid var(--black); }
+        .data-cell:nth-child(even) { border-right: none; }
+        .data-cell:nth-last-child(-n+2) { border-bottom: none; }
+        
+        .data-label { display: block; font-family: monospace; font-size: 0.7rem; text-transform: uppercase; color: #555; }
+        .data-value { font-size: 1.1rem; text-transform: uppercase; }
+
+        /* NAVEGACIÓN INFERIOR MÓVIL */
+        .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--white); border-top: var(--border-thick) solid var(--black); display: flex; z-index: 1000; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--black); text-decoration: none; font-family: monospace; font-weight: bold; font-size: 0.8rem; border-right: 2px solid var(--black); }
+        .nav-item:last-child { border-right: none; }
+        .nav-item.active { background: var(--primary); }
+
+        /* FOOTER */
+        .footer { background: var(--black); color: var(--white); padding: 40px 20px; display: flex; flex-direction: column; gap: 20px; border-top: var(--border-thick) solid var(--primary); font-family: monospace; margin-top: 40px; }
+        @media (min-width: 768px) { .footer { flex-direction: row; justify-content: space-between; } }
+        .footer a { color: #ccc; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer a:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="index.html" class="logo">TRUCKFUND</a>
+        <div class="desktop-menu">
+            <a href="index.html">Inicio</a>
+            <a href="financiacion.html" style="color: var(--primary); text-decoration: underline;">Financiación</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="contacto.html" class="brutal-btn" style="padding: 10px 20px; font-size: 1rem; display: inline-block; width: auto; box-shadow: 4px 4px 0px #000;">Aplica YA</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="header-section">
+            <span class="header-badge">Catálogo de Crédito</span>
+            <h1>Financiamos hasta el <span>80%</span> de tu vehículo comercial.</h1>
+            <p>Líneas de crédito diseñadas exclusivamente para el sector transporte. Aprobaciones bajo garantías reales y flujo de caja proyectado. Cero abstracciones, 100% capacidad operativa.</p>
+        </div>
+
+        <div class="catalog-grid">
+            
+            <article class="catalog-card">
+                <div class="card-image-container img-pesada">
+                    <span class="card-ref">REF: HGV-01</span>
+                </div>
+                <div class="card-content">
+                    <header class="card-header">
+                        <h2>Carga Pesada (Tractomulas)</h2>
+                    </header>
+                    <div class="card-body">
+                        <p>Financiamiento estructurado para tractocamiones y flotas de larga distancia. Evaluamos tu ruta y generación de ingresos.</p>
+                        <div class="data-grid">
+                            <div class="data-cell">
+                                <span class="data-label">Monto Máx</span>
+                                <span class="data-value">$850M COP</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Plazo Máx</span>
+                                <span class="data-value">72 Meses</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Garantía</span>
+                                <span class="data-value">Prenda Vehicular</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Desembolso</span>
+                                <span class="data-value">48 Horas</span>
+                            </div>
+                        </div>
+                        <a href="contacto.html" class="brutal-btn" style="background: var(--white); margin-top: auto;">Cotizar esta línea</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="catalog-card">
+                <div class="card-image-container img-ligera">
+                    <span class="card-ref">REF: LGV-02</span>
+                </div>
+                <div class="card-content">
+                    <header class="card-header" style="background: var(--bg-color);">
+                        <h2>Carga Ligera (Furgones)</h2>
+                    </header>
+                    <div class="card-body">
+                        <p>Capital para vehículos de reparto urbano y última milla. Diseñado para PYMES y operadores logísticos independientes.</p>
+                        <div class="data-grid">
+                            <div class="data-cell">
+                                <span class="data-label">Monto Máx</span>
+                                <span class="data-value">$250M COP</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Plazo Máx</span>
+                                <span class="data-value">60 Meses</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Cobertura</span>
+                                <span class="data-value">Nacional</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Seguro</span>
+                                <span class="data-value">Incluido</span>
+                            </div>
+                        </div>
+                        <a href="contacto.html" class="brutal-btn" style="margin-top: auto;">Cotizar esta línea</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="catalog-card">
+                <div class="card-image-container img-maquinaria">
+                    <span class="card-ref" style="background: var(--primary); color: var(--black);">REF: HVY-03</span>
+                </div>
+                <div class="card-content">
+                    <header class="card-header inverse">
+                        <h2>Maquinaria Amarilla / Volquetas</h2>
+                    </header>
+                    <div class="card-body">
+                        <p>Apoyo financiero para equipos de construcción y movimiento de tierras. Estructuras de pago adaptables a flujos de proyectos.</p>
+                        <div class="data-grid">
+                            <div class="data-cell">
+                                <span class="data-label">Monto Máx</span>
+                                <span class="data-value">Sujeto a Proyecto</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Plazo Máx</span>
+                                <span class="data-value">48 Meses</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Gracia</span>
+                                <span class="data-value">Hasta 6 Meses</span>
+                            </div>
+                            <div class="data-cell">
+                                <span class="data-label">Análisis</span>
+                                <span class="data-value">Contractual</span>
+                            </div>
+                        </div>
+                        <a href="contacto.html" class="brutal-btn" style="background: var(--black); color: var(--primary); margin-top: auto;">Cotizar esta línea</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item">INICIO</a>
+        <a href="contacto.html" class="nav-item active" style="background: var(--primary); border-top: 4px solid var(--black);">APLICA</a>
+        <a href="financiacion.html" class="nav-item">CRÉDITO</a>
+        <a href="nosotros.html" class="nav-item">LEGAL</a>
+    </nav>
+
+    <footer class="footer">
+        <div>
+            <h3 style="font-family: 'Arial Black'; font-size: 1.5rem; margin-bottom: 10px;">TRUCKFUND</h3>
+            <p>© 2026 NIT 100.845.700</p>
+            <p>BOGOTÁ, COLOMBIA</p>
+        </div>
+        <div>
+            <a href="#">POLÍTICAS DE PRIVACIDAD</a>
+            <a href="#">TÉRMINOS Y SERVICIOS</a>
+            <a href="contacto.html">CONTACTO</a>
+        </div>
+    </footer>
+
+</body>
+</html>
